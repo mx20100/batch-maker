@@ -64,8 +64,8 @@ class AMFlowBatchCreator(tk.Tk):
         # Separate name and extension
         name, ext = os.path.splitext(filename)
         # Convert to lowercase and replace non-compliant characters with an underscore
-        # Compliant: a-z, 0-9, -, _, (, ), comma
-        clean_name = re.sub(r'[^a-z0-9\-_\(\),]', '_', name.lower())
+        # Compliant: a-z, 0-9, -, _, (, )
+        clean_name = re.sub(r'[^a-z0-9\-_\(\)]', '_', name.lower())
         return f"{clean_name}.stl", clean_name
 
     def generate_base_data(self):
