@@ -1,6 +1,6 @@
-# AM-Flow Batch Creator
+# AM-Flow Batch Maker
 
-The **AM-Flow Batch Creator** is an internal desktop tool designed to streamline the preparation of STL files for AM-Flow systems. 
+The **AM-Flow Batch Maker** is an internal desktop tool designed to streamline the preparation of STL files for AM-Flow systems. 
 
 It takes a ZIP file containing your 3D models (STLs), sanitizes the filenames, generates random order IDs, and automatically builds the required `meta.csv` file. It also safely splits large batches into smaller folders of 100 files each, ready for upload.
 
