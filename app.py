@@ -189,11 +189,30 @@ class AMFlowBatchCreator(tk.Tk):
                 with zipfile.ZipFile(self.zip_filepath, 'r') as z:
                     z.extractall(temp_dir)
                 
-                total_files = len(self.file_data)
+                # --- NEW 900 MB SPLITTING LOGIC ---
+                max_size_bytes = 900 * 1024 * 1024  # 900 MB in bytes
+                chunks = []
+                current_chunk = []
+                current_size = 0
                 
-                # Split logic
-                chunk_size = 100
-                chunks = [self.file_data[i:i + chunk_size] for i in range(0, total_files, chunk_size)]
+                for row in self.file_data:
+                    file_path = os.path.join(temp_dir, row["original_path"])
+                    file_size = os.path.getsize(file_path)
+                    
+                    # If adding this file exceeds 900MB and the current chunk isn't empty,
+                    # save the current chunk and start a new one.
+                    if current_size + file_size > max_size_bytes and current_chunk:
+                        chunks.append(current_chunk)
+                        current_chunk = []
+                        current_size = 0
+                        
+                    current_chunk.append(row)
+                    current_size += file_size
+                    
+                # Add the last chunk if it has any files left
+                if current_chunk:
+                    chunks.append(current_chunk)
+                # ----------------------------------
                 
                 for step_idx, chunk in enumerate(chunks):
                     if len(chunks) > 1:
@@ -221,7 +240,7 @@ class AMFlowBatchCreator(tk.Tk):
                         dst = os.path.join(step_folder, row["filename"])
                         shutil.copy2(src, dst)
                         
-            messagebox.showinfo("Success", f"Batch processed successfully!\nSaved to Desktop: {os.path.basename(output_folder)}")
+            messagebox.showinfo("Success", f"Batch processed successfully!\nSaved to Desktop: {os.path.basename(output_folder)}\nTotal folders created: {len(chunks)}")
             self.file_data = [] # Clear memory
             self.lbl_file.config(text="No file selected", fg="gray")
             self.zip_filepath = ""
