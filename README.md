@@ -6,14 +6,27 @@ It takes a ZIP file containing your 3D models (STLs), sanitizes the filenames, g
 
 ## 📥 How to Download
 
+### Windows Installation
+
 You do not need to install Python or any special software to run this tool. 
 
 1. On this GitHub page, look at the right side of the screen for the **Releases** section.
-2. Click on the latest release (e.g., "Latest" or "v1.0.0"). 
+2. Click on the latest release. 
 3. Under the **Assets** dropdown at the bottom of the release notes, click on **`AMFlow_Batch_Creator.exe`** to download it.
 4. Once downloaded, you can move the `.exe` file to your Desktop or anywhere convenient. Just double-click it to run!
 
 *(Note: If Windows SmartScreen shows a "Windows protected your PC" popup, click **More info** -> **Run anyway**. This happens because the app is an internal tool and not signed by a commercial publisher.)*
+
+### Linux Installation
+
+1. Create a folder in a convinient location on your computer
+2. Download and place app.py in that folder
+3. Open terminal in that same folder and update your packages. On a Debian based distro such as Ubuntu, use `sudo apt update`
+4. Install python3 and its dependencies. `sudo apt install python3 python3-pip python3-tk` (If you already have the latest versions of PIP and Python installed, just install `python3-tk`)
+5. Install PyInstaller. `pip3 install pyinstaller`
+6. Build the app. `pyinstaller --noconsole --onefile app.py`
+
+*(Note: Before running it for the first time you may need to update the permissions for this app to run. Do so by running this command in terminal: `chmod +x AMFlow_Batch_Creator_Linux`)*
 
 ## 🚀 How to Use
 
