@@ -5,6 +5,7 @@ import csv
 import random
 import re
 import tempfile
+import io
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
@@ -179,7 +180,8 @@ class AMFlowBatchCreator(tk.Tk):
             
         try:
             desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-            output_folder = os.path.join(desktop_path, f"Batch_{self.entry_batch.get().strip()}")
+            batch_name = self.entry_batch.get().strip()
+            output_folder = os.path.join(desktop_path, f"Batch_{batch_name}")
             
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
@@ -189,8 +191,8 @@ class AMFlowBatchCreator(tk.Tk):
                 with zipfile.ZipFile(self.zip_filepath, 'r') as z:
                     z.extractall(temp_dir)
                 
-                # --- NEW 900 MB SPLITTING LOGIC ---
-                max_size_bytes = 900 * 1024 * 1024  # 900 MB in bytes
+                # Split logic (900 MB limit)
+                max_size_bytes = 900 * 1024 * 1024
                 chunks = []
                 current_chunk = []
                 current_size = 0
@@ -199,8 +201,6 @@ class AMFlowBatchCreator(tk.Tk):
                     file_path = os.path.join(temp_dir, row["original_path"])
                     file_size = os.path.getsize(file_path)
                     
-                    # If adding this file exceeds 900MB and the current chunk isn't empty,
-                    # save the current chunk and start a new one.
                     if current_size + file_size > max_size_bytes and current_chunk:
                         chunks.append(current_chunk)
                         current_chunk = []
@@ -209,24 +209,27 @@ class AMFlowBatchCreator(tk.Tk):
                     current_chunk.append(row)
                     current_size += file_size
                     
-                # Add the last chunk if it has any files left
                 if current_chunk:
                     chunks.append(current_chunk)
-                # ----------------------------------
                 
+                # --- ZIP CREATION LOGIC ---
                 for step_idx, chunk in enumerate(chunks):
+                    # Name the zip file based on whether there's one or multiple chunks
                     if len(chunks) > 1:
-                        step_folder = os.path.join(output_folder, f"step_{step_idx + 1}")
-                        os.makedirs(step_folder, exist_ok=True)
+                        zip_filename = f"{batch_name}_part{step_idx + 1}.zip"
                     else:
-                        step_folder = output_folder
+                        zip_filename = f"{batch_name}.zip"
                         
-                    csv_path = os.path.join(step_folder, "meta.csv")
+                    zip_filepath = os.path.join(output_folder, zip_filename)
                     
-                    # Write CSV
-                    with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-                        writer = csv.writer(f)
+                    # Open a new ZIP file using ZIP_STORED for faster, uncompressed packaging
+                    with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_STORED) as out_zip:
+                        
+                        # Generate CSV in memory (RAM) instead of writing to disk
+                        csv_buffer = io.StringIO()
+                        writer = csv.writer(csv_buffer)
                         writer.writerow(["batch", "filename", "material", "part_id", "copies", "next_step", "order_id", "technology"])
+                        
                         for row in chunk:
                             writer.writerow([
                                 row["batch"], row["filename"], row["material"], 
@@ -234,13 +237,15 @@ class AMFlowBatchCreator(tk.Tk):
                                 row["order_id"], row["technology"]
                             ])
                             
-                    # Move & Rename STLs
-                    for row in chunk:
-                        src = os.path.join(temp_dir, row["original_path"])
-                        dst = os.path.join(step_folder, row["filename"])
-                        shutil.copy2(src, dst)
+                        # Write the memory CSV directly into the root of the ZIP file
+                        out_zip.writestr("meta.csv", csv_buffer.getvalue().encode('utf-8'))
                         
-            messagebox.showinfo("Success", f"Batch processed successfully!\nSaved to Desktop: {os.path.basename(output_folder)}\nTotal folders created: {len(chunks)}")
+                        # Write the STLs directly from the temp folder into the root of the ZIP file
+                        for row in chunk:
+                            src_path = os.path.join(temp_dir, row["original_path"])
+                            out_zip.write(src_path, arcname=row["filename"])
+                        
+            messagebox.showinfo("Success", f"Batch processed successfully!\nSaved to Desktop: {os.path.basename(output_folder)}\nTotal ZIP archives created: {len(chunks)}")
             self.file_data = [] # Clear memory
             self.lbl_file.config(text="No file selected", fg="gray")
             self.zip_filepath = ""
