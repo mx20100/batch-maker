@@ -56,7 +56,7 @@ Click the green **Start Processing** button.
 * Click on **browse...** to open file explorer.
 * Select the ZIP file of the batch you want to upload and click **Upload Zip File** to upload the batch.
 
-## 📂 Output & Automated Rules0
+## 📂 Output & Automated Rules
 
 Once processing is complete, a new folder will automatically appear on your **Desktop** named `Batch_[YourBatchName]`. 
 
