@@ -48,7 +48,7 @@ class AMFlowBatchCreator(tk.Tk):
         btn_frame = tk.Frame(self)
         btn_frame.pack(pady=20)
 
-        self.btn_advanced = tk.Button(btn_frame, text="Advanced (Edit Rows)", command=self.open_advanced)
+        self.btn_advanced = tk.Button(btn_frame, text="Advanced (Edit CSV)", command=self.open_advanced)
         self.btn_advanced.grid(row=0, column=0, padx=10)
         
         self.btn_start = tk.Button(btn_frame, text="Start Processing", bg="green", fg="white", font=("Arial", 10, "bold"), command=self.process_batch)
