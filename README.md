@@ -43,7 +43,7 @@ Double-click `Batch_Maker.exe` to open the application.
 * **Technology:** Enter the print technology (e.g., MJF, SLS).
 
 ### 4. Advanced Editing (Optional)
-If you need specific files to have different properties (like a different material, more than 1 copy, or a different technology), click the **Advanced (Edit Rows)** button.
+If you need specific files to have different properties (like a different material, more than 1 copy, or a different technology), click the **Advanced (Edit CSV)** button.
 * A spreadsheet-like view will open.
 * Click on any row to select it, change the values at the bottom, and click **Update Selected Row**.
 
