@@ -62,6 +62,6 @@ Once processing is complete, a new folder will automatically appear on your **De
 
 Inside, you will find your files formatted perfectly for AM-Flow:
 * **`meta.csv` Generation:** A properly formatted CSV file (UTF-8) is generated automatically alongside your files.
-* **Filename Cleaning:** Any unsupported characters in your original STL filenames will be automatically replaced with underscores (`_`) or dashes (`-`) to meet the strict `a-z`, `0-9`, `-`, `_`, `()`, `,` spec.
+* **Filename Cleaning:** Any unsupported characters in your original STL filenames will be automatically replaced with underscores (`_`) or dashes (`-`) to meet the strict `a-z`, `0-9`, `-`, `_`, `()` spec.
 * **Auto-Splitting:** If your ZIP contains more than 100 STLs, the tool will automatically divide them into sub-folders (`step_1`, `step_2`, etc.), each with a maximum of 100 STLs and its own `meta.csv`.
 * **Randomized Order IDs:** Every file is assigned a unique, random order ID.
