@@ -65,7 +65,7 @@ class AMFlowBatchCreator(tk.Tk):
         # Separate name and extension
         name, ext = os.path.splitext(filename)
         # Convert to lowercase and replace non-compliant characters with an underscore
-        # Compliant: a-z, 0-9, -, _, (, )
+        # Compliant: a-z, 0-9, -, _
         clean_name = re.sub(r'[^a-z0-9\-_\(\)]', '_', name.lower())
         return f"{clean_name}.stl", clean_name
 
@@ -95,7 +95,7 @@ class AMFlowBatchCreator(tk.Tk):
                 return False
 
             # Generate unique random order IDs
-            max_id = max(1000, len(stl_files) * 2) # Ensure we have enough pool if > 1000 files
+            max_id = max(1000, len(stl_files) * 2)
             order_ids = random.sample(range(1, max_id + 1), len(stl_files))
 
             for i, original_path in enumerate(stl_files):

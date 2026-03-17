@@ -12,7 +12,7 @@ You do not need to install Python or any special software to run this tool.
 
 1. On this GitHub page, look at the right side of the screen for the **Releases** section.
 2. Click on the latest release. 
-3. Under the **Assets** dropdown at the bottom of the release notes, click on **`AMFlow_Batch_Creator.exe`** to download it.
+3. Under the **Assets** dropdown at the bottom of the release notes, click on **`Batch_Maker.exe`** to download it.
 4. Once downloaded, you can move the `.exe` file to your Desktop or anywhere convenient. Just double-click it to run!
 
 *(Note: If Windows SmartScreen shows a "Windows protected your PC" popup, click **More info** -> **Run anyway**. This happens because the app is an internal tool and not signed by a commercial publisher.)*
@@ -34,7 +34,7 @@ You do not need to install Python or any special software to run this tool.
 Place all the `.stl` files you want to process into a single `.zip` file. (Select the files, right-click -> Compress to ZIP file). 
 
 ### 2. Run the Tool
-Double-click `AMFlow_Batch_Creator.exe` to open the application.
+Double-click `Batch_Maker.exe` to open the application.
 
 ### 3. Fill Out the Batch Details
 * **Browse ZIP:** Click this button and select the ZIP file you created in Step 1.
@@ -49,6 +49,12 @@ If you need specific files to have different properties (like a different materi
 
 ### 5. Start Processing
 Click the green **Start Processing** button. 
+
+### 6. Uploading the Batch
+* Open the admin page of the machine you want to upload batches to, and navigate to `Batches`.
+* Click on **Upload Zip File** to open the upload tool.
+* Click on **browse...** to open file explorer.
+* Select the ZIP file of the batch you want to upload and click **Upload Zip File** to upload the batch.
 
 ## 📂 Output & Automated Rules
 
